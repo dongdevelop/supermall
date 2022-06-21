@@ -29,6 +29,8 @@ export default {
 }
 </script>
 
+
+
 <style scoped>
 .home-nav{
   background-color: var(--color-black);
