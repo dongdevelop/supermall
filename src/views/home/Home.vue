@@ -8,6 +8,7 @@
     <feature-view></feature-view>
 
     <tab-control :titles="['展会','考察','路演']" class="tab-control"></tab-control>
+    <goods-list :goods="goods.pop.list"></goods-list>
 
     <ul>
       <li>12222222222222222222222222</li>
@@ -72,8 +73,11 @@ import FeatureView from "@/views/home/childComps/FeatureView";
 
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "@/components/content/tabControl/TabControl";
+import GoodsList from "@/components/content/goods/GoodsList";
 
 import {getHomeMultidata,getHomeGoods} from "@/network/home";
+
+
 
 
 
@@ -85,7 +89,8 @@ export default {
     HomeSwiper,
     RecommendView,
     FeatureView,
-    TabControl
+    TabControl,
+    GoodsList
   },
   data(){
     return {
