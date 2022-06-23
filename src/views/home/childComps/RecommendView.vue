@@ -2,7 +2,7 @@
   <div class="recommend">
     <div v-for="(item, index) in recommends" data-index="index" :key="index" class="item">
       <a :href="item.mlink">
-        <img :src="require('../../../assets/imgs/recommend/'+item.icon)"/>
+        <img :src="item.image"/>
         <div>{{item.title}}</div>
       </a>
 

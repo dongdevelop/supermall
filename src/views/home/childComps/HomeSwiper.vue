@@ -2,7 +2,7 @@
   <div class="recommendPage">
     <swiper :options="swiperOption" ref="mySwiper">
       <swiper-slide v-for="(item, index) in banners" data-index="index" :key="index" class="item">
-        <img class='swiImg' :src='item.pic' />
+        <img class='swiImg' :src='item.image' />
 
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
@@ -75,7 +75,6 @@ export default {
 .recommendPage .swiper-container .swiper-slide{
   width: 100%;
   line-height: 200px;
-  background: yellowgreen;
   color: #000;
   font-size: 16px;
   text-align: center;

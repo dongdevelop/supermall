@@ -34,7 +34,9 @@ export default {
 .tabcontrol{
   display: flex;
   text-align: center;
-  padding-top: 20px;
+  padding: 20px 0;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
 }
 .item{
   flex: 1;

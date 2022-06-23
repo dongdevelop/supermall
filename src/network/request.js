@@ -2,7 +2,8 @@ import axios from "axios";
 
 export function request(config){
   const instance = axios.create({
-    baseURL:'https://neact.precast.com.cn/api/',
+    // baseURL:'https://neact.precast.com.cn/api/',
+    baseURL:'http://152.136.185.210:7878/api/hy66',
     timeout:5000
   })
 

@@ -7,7 +7,60 @@
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
 
-    <tab-control :titles="['展会','考察','路演']"></tab-control>
+    <tab-control :titles="['展会','考察','路演']" class="tab-control"></tab-control>
+
+    <ul>
+      <li>12222222222222222222222222</li>
+      <li>122222222222222222</li>
+      <li>1222222222222222222222222</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li>
+      <li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li> <li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li> <li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li><li>1</li>
+      <li>1</li>
+      <li>1</li>
+    </ul>
   </div>
 </template>
 
@@ -20,7 +73,7 @@ import FeatureView from "@/views/home/childComps/FeatureView";
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "@/components/content/tabControl/TabControl";
 
-import {getHomeMultidata} from "@/network/home";
+import {getHomeMultidata,getHomeGoods} from "@/network/home";
 
 
 
@@ -37,15 +90,34 @@ export default {
   data(){
     return {
       banners: [],
-      recommends:[]
+      recommends:[],
+      goods:{
+        'pop':{page:0,list:[]},
+        'new':{page:0,list:[]},
+        'sell':{page:0,list:[]},
+      }
     }
   },
   created() {
-    getHomeMultidata().then(res=>{
-      console.log(res);
-      this.banners = res.banner;
-      this.recommends = res.cal;
-    })
+   this.getHomeMultidata();
+   this.getHomeGoods('pop');
+   this.getHomeGoods('new');
+   this.getHomeGoods('sell');
+  },
+  methods:{
+    getHomeMultidata(){
+      getHomeMultidata().then(res=>{
+        this.banners = res.data.banner.list;
+        this.recommends = res.data.recommend.list;
+      })
+    },
+    getHomeGoods(type){
+      const page = this.goods[type].page + 1;
+      getHomeGoods(type,page).then(res=>{
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page += 1;
+      })
+    }
   }
 }
 </script>
@@ -66,5 +138,9 @@ export default {
   left: 0;
   right: 0;
   z-index: 99;
+}
+.tab-control{
+  position: sticky;
+  top: 44px;
 }
 </style>
