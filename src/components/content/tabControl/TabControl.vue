@@ -25,6 +25,7 @@ export default {
   methods:{
     mcilck(ind){
       this.currentIndex = ind;
+      this.$emit('tabClick',ind)
     }
   }
 }

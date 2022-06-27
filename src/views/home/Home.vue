@@ -3,64 +3,18 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view></feature-view>
 
-    <tab-control :titles="['展会','考察','路演']" class="tab-control"></tab-control>
+    <scroll class="content">
+      <home-swiper :banners="banners"></home-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view></feature-view>
 
-    <ul>
-      <li>12222222222222222222222222</li>
-      <li>122222222222222222</li>
-      <li>1222222222222222222222222</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li> <li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li> <li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li><li>1</li>
-      <li>1</li>
-      <li>1</li>
-    </ul>
+      <tab-control :titles="['展会','考察','路演']" class="tab-control" @tabClick="tabClick"></tab-control>
+
+      <goods-list :goods="goods[currentTabItem].list"></goods-list>
+    </scroll>
+
+
   </div>
 </template>
 
@@ -69,9 +23,13 @@
 import HomeSwiper from "@/views/home/childComps/HomeSwiper";
 import RecommendView from "@/views/home/childComps/RecommendView";
 import FeatureView from "@/views/home/childComps/FeatureView";
+import Scroll from "@/components/common/scroll/Scroll";
 
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "@/components/content/tabControl/TabControl";
+import GoodsList from "@/components/content/goods/GoodsList";
+
+
 
 import {getHomeMultidata,getHomeGoods} from "@/network/home";
 
@@ -85,7 +43,9 @@ export default {
     HomeSwiper,
     RecommendView,
     FeatureView,
-    TabControl
+    TabControl,
+    GoodsList,
+    Scroll
   },
   data(){
     return {
@@ -95,7 +55,8 @@ export default {
         'pop':{page:0,list:[]},
         'new':{page:0,list:[]},
         'sell':{page:0,list:[]},
-      }
+      },
+      currentTabItem:'pop'
     }
   },
   created() {
@@ -105,6 +66,20 @@ export default {
    this.getHomeGoods('sell');
   },
   methods:{
+    tabClick(index){
+      switch (index) {
+        case 0:
+          this.currentTabItem = 'pop';
+          break;
+        case 1:
+          this.currentTabItem = 'new';
+          break;
+        case 2:
+          this.currentTabItem = 'sell';
+          break;
+
+      }
+    },
     getHomeMultidata(){
       getHomeMultidata().then(res=>{
         this.banners = res.data.banner.list;
@@ -126,8 +101,8 @@ export default {
 
 <style scoped>
 #home{
-  padding-top: 44px;
   padding-bottom: 60px;
+  height: 100vh;
 }
 .home-nav{
   background-color: var(--color-black);
@@ -142,5 +117,10 @@ export default {
 .tab-control{
   position: sticky;
   top: 44px;
+}
+.content{
+  margin-top: 44px;
+  height: calc(100% - 35px);
+  overflow: hidden;
 }
 </style>
