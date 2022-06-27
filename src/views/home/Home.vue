@@ -9,7 +9,7 @@
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
 
-      <tab-control :titles="['展会','考察','路演']" class="tab-control" @tabClick="tabClick"></tab-control>
+      <tab-control :titles="['展会','考察1','路演']" class="tab-control" @tabClick="tabClick"></tab-control>
 
       <goods-list :goods="goods[currentTabItem].list"></goods-list>
     </scroll>
