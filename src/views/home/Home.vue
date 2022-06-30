@@ -3,13 +3,15 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+    <tab-control :titles="['展会','考察','路演']"  ref="tabControl1" @tabClick="tabClick" class="tab-control" v-show="isTabFixed"></tab-control>
+
 
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
 
-      <tab-control :titles="['展会','考察','路演']" class="tab-control" @tabClick="tabClick"></tab-control>
+      <tab-control :titles="['展会','考察','路演']"  ref="tabControl2" @tabClick="tabClick" ></tab-control>
 
       <goods-list :goods="goods[currentTabItem].list"></goods-list>
     </scroll>
@@ -30,6 +32,7 @@ import TabControl from "@/components/content/tabControl/TabControl";
 import GoodsList from "@/components/content/goods/GoodsList";
 import BackTop from "@/components/content/backTop/BackTop";
 
+import {debounce} from "@/common/utils";
 
 
 import {getHomeMultidata,getHomeGoods} from "@/network/home";
@@ -59,7 +62,9 @@ export default {
         'sell':{page:0,list:[]},
       },
       currentTabItem:'pop',
-      ishow:false
+      ishow:false,
+      tabOffsetTop:0,
+      isTabFixed:false
     }
   },
   created() {
@@ -71,7 +76,7 @@ export default {
   },
   mounted() {
 
-    const refresh = this.debounce(this.$refs.scroll.refresh,200)
+    const refresh = debounce(this.$refs.scroll.refresh,200)
     this.$bus.$on('itemImageLoad',()=>{
 
       refresh()
@@ -80,16 +85,7 @@ export default {
     })
   },
   methods:{
-    debounce(func,delay){
-      let timer = null;
-      return function (...args){
-        if(timer){ clearTimeout(timer) }
 
-        timer = setTimeout(()=>{
-          func.apply(this,args)
-        },delay)
-      }
-    },
     tabClick(index){
       switch (index) {
         case 0:
@@ -103,18 +99,26 @@ export default {
           break;
 
       }
+      this.$refs.tabControl1.currentIndex = index
+      this.$refs.tabControl2.currentIndex = index
     },
     backClick(){
       this.$refs.scroll.scrollerTo(0,0,1000)
     },
     contentScroll(position){
+      // 判断backtop 是否显示
       this.ishow = (-position.y) > 1000
+
+      // 决定tabcontrol是否吸顶
+      this.isTabFixed = (-position.y) > this.tabOffsetTop
     },
     loadMore(){
       // console.log('加载更多');
       this.getHomeGoods(this.currentTabItem)
-
       this.$refs.scroll.refresh()
+    },
+    swiperImageLoad(){
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
     },
     getHomeMultidata(){
       getHomeMultidata().then(res=>{
@@ -144,15 +148,21 @@ export default {
 .home-nav{
   background-color: var(--color-black);
   color: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  /*position: fixed;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*right: 0;*/
   z-index: 99;
 }
 .tab-control{
-  position: sticky;
+  position: relative;
+  z-index: 999;
+}
+.fixed{
+  position: fixed;
   top: 44px;
+  left: 0;
+  right: 0;
 }
 .content{
   /*height: calc(100% - 35px);*/

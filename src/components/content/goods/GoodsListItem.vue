@@ -22,6 +22,7 @@ export default {
   },
   methods:{
     imageLoad(){
+
       this.$bus.$emit('itemImageLoad')
     }
   }
@@ -33,12 +34,7 @@ export default {
   width: 48%;
   padding-bottom: 10px;
 }
-/*.good-info{*/
-/*  bottom: 5px;*/
-/*  left: 0;*/
-/*  right: 0;*/
-/*  font-size: 12px;*/
-/*}*/
+
 .good-item img{
   width: 100%;
   border-radius: 5px;

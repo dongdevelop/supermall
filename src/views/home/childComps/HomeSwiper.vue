@@ -2,7 +2,7 @@
   <div class="recommendPage">
     <swiper :options="swiperOption" ref="mySwiper">
       <swiper-slide v-for="(item, index) in banners" data-index="index" :key="index" class="item">
-        <img class='swiImg' :src='item.image' />
+        <img class='swiImg' :src='item.image'  @load="imageLoad"/>
 
       </swiper-slide>
       <div class="swiper-pagination" slot="pagination"></div>
@@ -31,6 +31,7 @@ export default {
   },
   data() {
     return {
+      isLoad:false,
       swiperOption: {
         loop: true,
         autoplay: {
@@ -49,7 +50,8 @@ export default {
           prevEl: ".swiper-button-prev"
         }
       }
-    };
+
+    }
   },
   computed: {
     swiper() {
@@ -61,6 +63,15 @@ export default {
     // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
     console.log("this is current swiper instance object", this.swiper);
     // this.swiper.slideTo(3, 1000, false);
+  },
+  methods:{
+    imageLoad(){
+      if(!this.isLoad){
+        this.$emit('swiperImageLoad')
+        this.isLoad = true
+      }
+
+    }
   }
 }
 </script>
