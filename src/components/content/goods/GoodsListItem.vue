@@ -1,6 +1,6 @@
 <template>
   <div class="good-item">
-    <img :src="gooditem.show.img">
+    <img :src="gooditem.show.img" @load="imageLoad">
     <div class="good-info">
       <p>{{gooditem.title}}</p>
       <span>{{gooditem.price}}</span>
@@ -19,6 +19,11 @@ export default {
         return {}
       }
     }
+  },
+  methods:{
+    imageLoad(){
+      this.$bus.$emit('itemImageLoad')
+    }
   }
 }
 </script>
@@ -26,7 +31,14 @@ export default {
 <style scoped>
 .good-item{
   width: 48%;
+  padding-bottom: 10px;
 }
+/*.good-info{*/
+/*  bottom: 5px;*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*  font-size: 12px;*/
+/*}*/
 .good-item img{
   width: 100%;
   border-radius: 5px;
@@ -34,5 +46,6 @@ export default {
 .good-info{
   padding: 5px 0 10px;
   font-size: 12px;
+  margin-bottom: 8px;
 }
 </style>

@@ -11,6 +11,16 @@ import BScroll from 'better-scroll'
 
 export default {
   name: "Scroll",
+  props:{
+    probeType:{
+      type:Number,
+      default:0
+    },
+    pullUpLoad:{
+      type:Boolean,
+      default:false
+    }
+  },
   data(){
     return {
       scroll:null
@@ -19,8 +29,35 @@ export default {
   mounted() {
     this.scroll = new BScroll(this.$refs.wrapper,{
       observeDOM:true,
-      click:true
+      click:true,
+      probeType: this.probeType,
+      pullUpLoad:this.pullUpLoad
     })
+    // 只有指定:probe-type="3|2" 才能使用下面函数
+    this.scroll.on('scroll',(position)=>{
+      // console.log(position);
+      this.$emit('scroll',position)
+    })
+
+    this.scroll.on('pullingUp',()=>{
+      this.$emit('pullingUp')
+    })
+
+    // console.log(this.scroll);
+    // this.scroll.refresh()
+
+  },
+  methods:{
+    scrollerTo(x,y,time=500){
+      this.scroll && this.scroll.scrollTo(x,y,time);
+    },
+    finishPullUp(){
+      this.scroll.finishPullUp();
+    },
+    refresh(){
+      // console.log('----1');
+      this.scroll && this.scroll.refresh();
+    }
   }
 }
 </script>
