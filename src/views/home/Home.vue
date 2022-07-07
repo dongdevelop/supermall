@@ -8,6 +8,7 @@
 
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
       <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
+
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
 
@@ -64,7 +65,8 @@ export default {
       currentTabItem:'pop',
       ishow:false,
       tabOffsetTop:0,
-      isTabFixed:false
+      isTabFixed:false,
+      saveY:0
     }
   },
   created() {
@@ -84,8 +86,17 @@ export default {
       // console.log('-----');
     })
   },
+  destroyed() {
+    console.log('destroy');
+  },
+  activated() {
+    this.$refs.scroll.scrollerTo(0,this.saveY,0)
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY()
+  },
   methods:{
-
     tabClick(index){
       switch (index) {
         case 0:
