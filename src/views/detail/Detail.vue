@@ -29,6 +29,7 @@ import DetailCommentInfo from "@/views/detail/childComps/DetailCommentInfo";
 import GoodsList from "@/components/content/goods/GoodsList";
 
 import {getDetail,Goods,Shop,GoodsParam,getRecommend} from "@/network/detail";
+import {itemListenerMixin} from "@/common/mixin";
 
 
 
@@ -47,6 +48,7 @@ export default {
     GoodsList,
     Scroll
   },
+  mixins:[itemListenerMixin],
   data(){
     return {
       iid:null,
@@ -91,8 +93,16 @@ export default {
     })
 
   },
+  mounted() {
+
+
+  },
+  destroyed() {
+    this.$bus.$off('itemImageLoad',this.itemImgListener)
+  },
   methods:{
     imageLoad(){
+      // this.newRefresh()
       this.$refs.scroll.refresh()
     }
   }

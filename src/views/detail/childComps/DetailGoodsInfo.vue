@@ -41,7 +41,6 @@ export default {
   methods: {
     // TIP所有图片加载完才发送事件，以便于 Detial 组件正确的获取 offsetTop
     imagesLoad() {
-
       if(++this.counter === this.imagesLength){
         this.$emit('imageLoad')
       }

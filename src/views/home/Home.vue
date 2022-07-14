@@ -37,6 +37,7 @@ import {debounce} from "@/common/utils";
 
 
 import {getHomeMultidata,getHomeGoods} from "@/network/home";
+import {itemListenerMixin} from "@/common/mixin";
 
 
 
@@ -53,6 +54,7 @@ export default {
     Scroll,
     BackTop
   },
+  mixins:[itemListenerMixin],
   data(){
     return {
       banners: [],
@@ -78,16 +80,10 @@ export default {
   },
   mounted() {
 
-    const refresh = debounce(this.$refs.scroll.refresh,200)
-    this.$bus.$on('itemImageLoad',()=>{
-
-      refresh()
-      // this.$refs.scroll.refresh()
-      // console.log('-----');
-    })
   },
   destroyed() {
     console.log('destroy');
+
   },
   activated() {
     this.$refs.scroll.scrollerTo(0,this.saveY,0)
@@ -95,6 +91,7 @@ export default {
   },
   deactivated() {
     this.saveY = this.$refs.scroll.getScrollY()
+    this.$bus.$off('itemImageLoad',this.itemImgListener)
   },
   methods:{
     tabClick(index){
