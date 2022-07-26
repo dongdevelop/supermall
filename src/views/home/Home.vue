@@ -37,7 +37,7 @@ import {debounce} from "@/common/utils";
 
 
 import {getHomeMultidata,getHomeGoods} from "@/network/home";
-import {itemListenerMixin} from "@/common/mixin";
+import {backTop, itemListenerMixin} from "@/common/mixin";
 
 
 
@@ -54,7 +54,7 @@ export default {
     Scroll,
     BackTop
   },
-  mixins:[itemListenerMixin],
+  mixins:[itemListenerMixin,backTop],
   data(){
     return {
       banners: [],
@@ -65,7 +65,7 @@ export default {
         'sell':{page:0,list:[]},
       },
       currentTabItem:'pop',
-      ishow:false,
+      // ishow:false,
       tabOffsetTop:0,
       isTabFixed:false,
       saveY:0
@@ -78,19 +78,21 @@ export default {
    this.getHomeGoods('sell');
 
   },
-  mounted() {
-
-  },
   destroyed() {
     console.log('destroy');
 
   },
   activated() {
-    this.$refs.scroll.scrollerTo(0,this.saveY,0)
-    this.$refs.scroll.refresh()
+    console.log('activated'+this.saveY)
+    if(this.$refs.scroll){
+      this.$refs.scroll.scrollerTo(0,this.saveY,0)
+      this.$refs.scroll.refresh()
+    }
   },
   deactivated() {
+
     this.saveY = this.$refs.scroll.getScrollY()
+    console.log('deactivated'+this.saveY)
     this.$bus.$off('itemImageLoad',this.itemImgListener)
   },
   methods:{
@@ -110,12 +112,13 @@ export default {
       this.$refs.tabControl1.currentIndex = index
       this.$refs.tabControl2.currentIndex = index
     },
-    backClick(){
-      this.$refs.scroll.scrollerTo(0,0,1000)
-    },
+    // backClick(){
+    //   this.$refs.scroll.scrollerTo(0,0,1000)
+    // },
     contentScroll(position){
       // 判断backtop 是否显示
-      this.ishow = (-position.y) > 1000
+      // this.ishow = (-position.y) > 1000
+      this.backIshow(position)
 
       // 决定tabcontrol是否吸顶
       this.isTabFixed = (-position.y) > this.tabOffsetTop

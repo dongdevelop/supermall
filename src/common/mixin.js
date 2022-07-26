@@ -15,6 +15,20 @@ export const itemListenerMixin = {
       this.newRefresh()   // this.$refs.scroll.refresh()
     }
     this.$bus.$on('itemImageLoad',this.itemImgListener)
-    console.log('我是沦入内容');
+  }
+}
+export const backTop = {
+  data(){
+    return {
+      ishow:false,
+    }
+  },
+  methods:{
+    backClick(){
+      this.$refs.scroll.scrollerTo(0,0,1000)
+    },
+    backIshow(position){
+      this.ishow = (-position.y) > 1000
+    }
   }
 }

@@ -55,7 +55,7 @@ export default {
   },
   methods:{
     scrollerTo(x,y,time=500){
-      this.scroll && this.scroll.scrollTo(x,y,time);
+      this.scroll.scrollTo(x,y,time);
     },
     finishPullUp(){
       this.scroll.finishPullUp();
